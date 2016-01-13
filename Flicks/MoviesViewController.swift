@@ -8,6 +8,7 @@
 
 import UIKit
 import AFNetworking
+import EZLoadingActivity
 
 class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
 
@@ -17,6 +18,9 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        
+        
         
        TableView.delegate = self
         TableView.dataSource = self
@@ -38,9 +42,17 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
                             
                             self.movies = responseDictionary["results"] as! [NSDictionary]
                            self.TableView.reloadData()
+                           
+                            EZLoadingActivity.hide(success: true, animated: true)
+                            print("Loading")
+                           
                             
                     }
                 }
+                else{
+                    
+                    EZLoadingActivity.hide(success: false, animated: true)
+                    print("Failed")}
         });
         task.resume()
         // Do any additional setup after loading the view.
@@ -51,6 +63,7 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
         // Dispose of any resources that can be recreated.
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+         EZLoadingActivity.show("Loading", disableUI: true)
         if let movies = movies{
         return movies.count
         }

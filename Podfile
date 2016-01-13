@@ -5,6 +5,6 @@
 
 target 'Flicks' do
 pod 'AFNetworking'
-
+pod 'EZLoadingActivity'
 end
 
