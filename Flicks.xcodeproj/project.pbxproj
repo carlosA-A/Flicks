@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0782944CACB82443FCAB7FFE /* Pods_Flicks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE3DA8E668C9D0B2F0A3FA35 /* Pods_Flicks.framework */; };
 		ED1DE53E1C4419B300C66561 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1DE53D1C4419B300C66561 /* MovieCell.swift */; };
 		ED8A529B1C3C9F3B00B20478 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8A529A1C3C9F3B00B20478 /* AppDelegate.swift */; };
 		ED8A52A01C3C9F3B00B20478 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED8A529E1C3C9F3B00B20478 /* Main.storyboard */; };
@@ -16,6 +17,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		99D50ACB0AC06F5A5118E3F5 /* Pods-Flicks.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flicks.release.xcconfig"; path = "Pods/Target Support Files/Pods-Flicks/Pods-Flicks.release.xcconfig"; sourceTree = "<group>"; };
+		B494E8509B23690E18C3C474 /* Pods-Flicks.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flicks.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Flicks/Pods-Flicks.debug.xcconfig"; sourceTree = "<group>"; };
+		CE3DA8E668C9D0B2F0A3FA35 /* Pods_Flicks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flicks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED1DE53D1C4419B300C66561 /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		ED8A52971C3C9F3B00B20478 /* Flicks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flicks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED8A529A1C3C9F3B00B20478 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -31,12 +35,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0782944CACB82443FCAB7FFE /* Pods_Flicks.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F41213B2D8F7B226A0B68A4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CE3DA8E668C9D0B2F0A3FA35 /* Pods_Flicks.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DF0EAF5270CBA5E99B1C10C1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B494E8509B23690E18C3C474 /* Pods-Flicks.debug.xcconfig */,
+				99D50ACB0AC06F5A5118E3F5 /* Pods-Flicks.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		ED1DE53C1C44196300C66561 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -58,6 +80,8 @@
 			children = (
 				ED8A52991C3C9F3B00B20478 /* Flicks */,
 				ED8A52981C3C9F3B00B20478 /* Products */,
+				DF0EAF5270CBA5E99B1C10C1 /* Pods */,
+				3F41213B2D8F7B226A0B68A4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,9 +114,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = ED8A52A91C3C9F3B00B20478 /* Build configuration list for PBXNativeTarget "Flicks" */;
 			buildPhases = (
+				449DBA70578C75C9BBC81A89 /* Check Pods Manifest.lock */,
 				ED8A52931C3C9F3B00B20478 /* Sources */,
 				ED8A52941C3C9F3B00B20478 /* Frameworks */,
 				ED8A52951C3C9F3B00B20478 /* Resources */,
+				CE8135CD2CE2BA15A08DD0E0 /* Embed Pods Frameworks */,
+				920032C30A3B9BAC6F9D165C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -148,6 +175,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		449DBA70578C75C9BBC81A89 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		920032C30A3B9BAC6F9D165C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Flicks/Pods-Flicks-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE8135CD2CE2BA15A08DD0E0 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Flicks/Pods-Flicks-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		ED8A52931C3C9F3B00B20478 /* Sources */ = {
@@ -265,6 +340,7 @@
 		};
 		ED8A52AA1C3C9F3B00B20478 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B494E8509B23690E18C3C474 /* Pods-Flicks.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Flicks/Info.plist;
@@ -276,6 +352,7 @@
 		};
 		ED8A52AB1C3C9F3B00B20478 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 99D50ACB0AC06F5A5118E3F5 /* Pods-Flicks.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Flicks/Info.plist;
