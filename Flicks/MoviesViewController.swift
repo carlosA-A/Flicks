@@ -8,53 +8,36 @@
 
 import UIKit
 import AFNetworking
+// Pod library to represent succesfull load of application or failure
 import EZLoadingActivity
+
+
+
 
 class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
 
     @IBOutlet weak var TableView: UITableView!
+    
+    
+    //
+    var refreshControl : UIRefreshControl!
     
     var movies: [NSDictionary]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        
-        
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
+     self.TableView.insertSubview(refreshControl, atIndex: 0)
+     
         
        TableView.delegate = self
         TableView.dataSource = self
-        let apiKey = "a90831142632346e26a5aa0c2d94ebf7"
-        let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
-        let request = NSURLRequest(URL: url!)
-        let session = NSURLSession(
-            configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
-            delegate:nil,
-            delegateQueue:NSOperationQueue.mainQueue()
-        )
         
-        let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
-            completionHandler: { (dataOrNil, response, error) in
-                if let data = dataOrNil {
-                    if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
-                        data, options:[]) as? NSDictionary {
-                            NSLog("response: \(responseDictionary)")
-                            
-                            self.movies = responseDictionary["results"] as! [NSDictionary]
-                           self.TableView.reloadData()
-                           
-                            EZLoadingActivity.hide(success: true, animated: true)
-                            print("Loading")
-                           
-                            
-                    }
-                }
-                else{
-                    
-                    EZLoadingActivity.hide(success: false, animated: true)
-                    print("Failed")}
-        });
-        task.resume()
+        intitialCall()
+        
+        
         // Do any additional setup after loading the view.
     }
 
@@ -63,7 +46,7 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
         // Dispose of any resources that can be recreated.
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-         EZLoadingActivity.show("Loading", disableUI: true)
+        EZLoadingActivity.showWithDelay("Loading", disableUI: true,seconds: 0)
         if let movies = movies{
         return movies.count
         }
@@ -92,6 +75,44 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
         
     print("row \(indexPath.row)")
         return cell
+    }
+    
+    func intitialCall() {
+        
+        let apiKey = "a90831142632346e26a5aa0c2d94ebf7"
+        let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let request = NSURLRequest(URL: url!)
+        let session = NSURLSession(
+            configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
+            delegate:nil,
+            delegateQueue:NSOperationQueue.mainQueue()
+        )
+
+        let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
+            completionHandler: { (dataOrNil, response, error) in
+                if let data = dataOrNil {
+                    if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
+                        data, options:[]) as? NSDictionary {
+                            NSLog("response: \(responseDictionary)")
+                            
+                            self.movies = responseDictionary["results"] as! [NSDictionary]
+                            self.TableView.reloadData()
+                             self.refreshControl.endRefreshing()
+                            EZLoadingActivity.hide(success: true, animated: true)
+                            
+                           
+                    }
+                }
+                else{
+                    
+                    EZLoadingActivity.hide(success: false, animated: true)
+                    print("Failed")}
+        });
+        task.resume()
+    }
+    func onRefresh(){
+    intitialCall()
+        
     }
     
     
