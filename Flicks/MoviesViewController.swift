@@ -26,37 +26,44 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+
         refreshControl = UIRefreshControl()
+        //calls function to reload data on display
         refreshControl.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
      self.TableView.insertSubview(refreshControl, atIndex: 0)
      
         
        TableView.delegate = self
         TableView.dataSource = self
+
+        //function to load API data
         
         intitialCall()
-        
+
         
         // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        
         // Dispose of any resources that can be recreated.
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        EZLoadingActivity.showWithDelay("Loading", disableUI: true,seconds: 0)
+        EZLoadingActivity.show("Loading", disableUI: false)
+
         if let movies = movies{
         return movies.count
         }
         else{
+
             return 0
         }
         
         
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
+
     let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell",forIndexPath: indexPath) as! MovieCell
        
         let baseUrl = "http://image.tmdb.org/t/p/w500"
@@ -79,9 +86,14 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
     
     func intitialCall() {
         
+        EZLoadingActivity.show("Loading", disableUI: false)
+
         let apiKey = "a90831142632346e26a5aa0c2d94ebf7"
+
         let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        
         let request = NSURLRequest(URL: url!)
+
         let session = NSURLSession(
             configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
             delegate:nil,
@@ -97,17 +109,18 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
                             
                             self.movies = responseDictionary["results"] as! [NSDictionary]
                             self.TableView.reloadData()
-                             self.refreshControl.endRefreshing()
-                            EZLoadingActivity.hide(success: true, animated: true)
+                            self.refreshControl.endRefreshing()
+                           EZLoadingActivity.hide(success: true, animated: true)
                             
-                           
-                    }
-                }
+                            
+                                              }
+                                   }
+               
                 else{
                     
                     EZLoadingActivity.hide(success: false, animated: true)
-                    print("Failed")}
-        });
+                }
+        } );
         task.resume()
     }
     func onRefresh(){
