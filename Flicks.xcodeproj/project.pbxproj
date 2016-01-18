@@ -14,6 +14,8 @@
 		ED8A52A21C3C9F3B00B20478 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED8A52A11C3C9F3B00B20478 /* Assets.xcassets */; };
 		ED8A52A51C3C9F3B00B20478 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED8A52A31C3C9F3B00B20478 /* LaunchScreen.storyboard */; };
 		ED8A52AD1C3CA3E200B20478 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8A52AC1C3CA3E200B20478 /* MoviesViewController.swift */; };
+		EDCBF5DB1C4D45B0009F26FA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCBF5DA1C4D45B0009F26FA /* DetailViewController.swift */; };
+		EDCBF5DD1C4D5320009F26FA /* TopRatedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCBF5DC1C4D5320009F26FA /* TopRatedViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		ED8A52A41C3C9F3B00B20478 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED8A52A61C3C9F3B00B20478 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED8A52AC1C3CA3E200B20478 /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
+		EDCBF5DA1C4D45B0009F26FA /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		EDCBF5DC1C4D5320009F26FA /* TopRatedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopRatedViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +75,8 @@
 			isa = PBXGroup;
 			children = (
 				ED8A52AC1C3CA3E200B20478 /* MoviesViewController.swift */,
+				EDCBF5DA1C4D45B0009F26FA /* DetailViewController.swift */,
+				EDCBF5DC1C4D5320009F26FA /* TopRatedViewController.swift */,
 			);
 			name = "view controllers";
 			sourceTree = "<group>";
@@ -232,6 +238,8 @@
 				ED8A529B1C3C9F3B00B20478 /* AppDelegate.swift in Sources */,
 				ED8A52AD1C3CA3E200B20478 /* MoviesViewController.swift in Sources */,
 				ED1DE53E1C4419B300C66561 /* MovieCell.swift in Sources */,
+				EDCBF5DB1C4D45B0009F26FA /* DetailViewController.swift in Sources */,
+				EDCBF5DD1C4D5320009F26FA /* TopRatedViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

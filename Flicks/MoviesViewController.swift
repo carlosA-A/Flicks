@@ -14,15 +14,18 @@ import EZLoadingActivity
 
 
 
-class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
+class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate {
 
     @IBOutlet weak var TableView: UITableView!
     
+    @IBOutlet weak var searchBar: UISearchBar!
     
     //
     var refreshControl : UIRefreshControl!
     
     var movies: [NSDictionary]?
+    
+    var moviesFilter: [NSDictionary]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +53,8 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
         // Dispose of any resources that can be recreated.
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        EZLoadingActivity.show("Loading", disableUI: false)
+        EZLoadingActivity.showWithDelay("Loading", disableUI: false, seconds: 0)
+
 
         if let movies = movies{
         return movies.count
@@ -65,28 +69,28 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
 
     let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell",forIndexPath: indexPath) as! MovieCell
-       
         let baseUrl = "http://image.tmdb.org/t/p/w500"
         
         let movie = movies![indexPath.row]
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
-        let posterPath = movie["poster_path"] as! String
-        let imageUrl = NSURL(string: baseUrl+posterPath)
         
+        if let posterPath = movie["poster_path"] as? String{
+        let imageUrl = NSURL(string: baseUrl+posterPath)
+        cell.posterView.setImageWithURL(imageUrl!)
+        }
         
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
-        cell.posterView.setImageWithURL(imageUrl!)
+        
 
         
-    print("row \(indexPath.row)")
+ 
         return cell
     }
     
     func intitialCall() {
         
-        EZLoadingActivity.show("Loading", disableUI: false)
 
         let apiKey = "a90831142632346e26a5aa0c2d94ebf7"
 
@@ -130,14 +134,23 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
     
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if let cell = sender as? UITableViewCell{
+        let indexPath = TableView.indexPathForCell(cell)
+        let movie = movies![indexPath!.row]
+        let detailViewController = segue.destinationViewController as! DetailViewController
+        detailViewController.movie = movie
+        }
+        
+        print("Prepare for segue")
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
 }
