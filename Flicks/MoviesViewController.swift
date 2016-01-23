@@ -14,7 +14,7 @@ import EZLoadingActivity
 
 
 
-class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate {
+class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
 
     @IBOutlet weak var TableView: UITableView!
     
@@ -22,6 +22,7 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
     
     //
     var refreshControl : UIRefreshControl!
+    var endpoint : String!
     
     var movies: [NSDictionary]?
     
@@ -29,7 +30,29 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        EZLoadingActivity.showWithDelay("Loading", disableUI: false, seconds: 3)
+        
+        //Navigation bar editing
+        if let navigationBar = navigationController?.navigationBar { navigationBar.tintColor = UIColor(red: 1.0, green: 0.25, blue: 0.10, alpha: 0.8)
+            navigationBar.translucent = true
+            
+            navigationBar.barTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
+            
+            let shadow = NSShadow()
+            shadow.shadowColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
+            shadow.shadowOffset = CGSizeMake(2, 2);
+            shadow.shadowBlurRadius = 4;
+            navigationBar.titleTextAttributes = [
+                NSFontAttributeName : UIFont.boldSystemFontOfSize(17),
+                NSForegroundColorAttributeName : UIColor(red: 1, green: 0.25, blue: 0.10, alpha: 0.8),
+                NSShadowAttributeName : shadow
+            ]
+        }
+    
+        
+        
+        
         refreshControl = UIRefreshControl()
         //calls function to reload data on display
         refreshControl.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
@@ -53,8 +76,7 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
         // Dispose of any resources that can be recreated.
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        EZLoadingActivity.showWithDelay("Loading", disableUI: false, seconds: 0)
-
+        
 
         if let movies = movies{
         return movies.count
@@ -70,6 +92,9 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
 
     let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell",forIndexPath: indexPath) as! MovieCell
         let baseUrl = "http://image.tmdb.org/t/p/w500"
+        //No higlighted cells
+        cell.selectionStyle = .None
+        
         
         let movie = movies![indexPath.row]
         let title = movie["title"] as! String
@@ -94,7 +119,7 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
 
         let apiKey = "a90831142632346e26a5aa0c2d94ebf7"
 
-        let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let url = NSURL(string:"https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")
         
         let request = NSURLRequest(URL: url!)
 
@@ -109,18 +134,18 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
                 if let data = dataOrNil {
                     if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
                         data, options:[]) as? NSDictionary {
-                            NSLog("response: \(responseDictionary)")
+//                            NSLog("response: \(responseDictionary)")
                             
                             self.movies = responseDictionary["results"] as! [NSDictionary]
                             self.TableView.reloadData()
                             self.refreshControl.endRefreshing()
-                           EZLoadingActivity.hide(success: true, animated: true)
-                            
+                            EZLoadingActivity.hide(success: true, animated: true)
                             
                                               }
                                    }
                
                 else{
+                    
                     
                     EZLoadingActivity.hide(success: false, animated: true)
                 }
@@ -147,7 +172,6 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
         detailViewController.movie = movie
         }
         
-        print("Prepare for segue")
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
