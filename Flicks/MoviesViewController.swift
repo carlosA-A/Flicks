@@ -14,8 +14,10 @@ import EZLoadingActivity
 
 
 
+
 class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
 
+    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var TableView: UITableView!
     
     @IBOutlet weak var searchBar: UISearchBar!
@@ -37,7 +39,7 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
         if let navigationBar = navigationController?.navigationBar { navigationBar.tintColor = UIColor(red: 1.0, green: 0.25, blue: 0.10, alpha: 0.8)
             navigationBar.translucent = true
             
-            navigationBar.barTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
+            navigationBar.barTintColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 0)
             
             let shadow = NSShadow()
             shadow.shadowColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
@@ -102,7 +104,28 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
         
         if let posterPath = movie["poster_path"] as? String{
         let imageUrl = NSURL(string: baseUrl+posterPath)
-        cell.posterView.setImageWithURL(imageUrl!)
+       // cell.posterView.setImageWithURL(imageUrl!)
+            let imageRequest = NSURLRequest(URL: imageUrl!)
+            
+            cell.posterView.setImageWithURLRequest(
+                imageRequest,
+                placeholderImage: nil,
+                success: { (imageRequest, imageResponse, image) -> Void in
+                    
+                    // imageResponse will be nil if the image is cached
+                    if imageResponse != nil {
+                        cell.posterView.alpha = 0.0
+                        cell.posterView.image = image
+                        UIView.animateWithDuration(0.3, animations: { () -> Void in
+                            cell.posterView.alpha = 1.0
+                        })
+                    } else {
+                        cell.posterView.image = image
+                    }
+                },
+                failure: { (imageRequest, imageResponse, error) -> Void in
+                    // do something for the failure condition
+            })
         }
         
         cell.titleLabel.text = title
@@ -120,8 +143,8 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
         let apiKey = "a90831142632346e26a5aa0c2d94ebf7"
 
         let url = NSURL(string:"https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")
-        
-        let request = NSURLRequest(URL: url!)
+        let request = NSURLRequest(URL: url!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 10)
+       // let request = NSURLRequest(URL: url!)
 
         let session = NSURLSession(
             configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
@@ -135,6 +158,8 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
                     if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
                         data, options:[]) as? NSDictionary {
 //                            NSLog("response: \(responseDictionary)")
+                            self.errorLabel.hidden = true
+
                             
                             self.movies = responseDictionary["results"] as! [NSDictionary]
                             self.TableView.reloadData()
@@ -142,12 +167,13 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
                             EZLoadingActivity.hide(success: true, animated: true)
                             
                                               }
-                                   }
+                }
                
                 else{
                     
-                    
+                    self.errorLabel.hidden = false
                     EZLoadingActivity.hide(success: false, animated: true)
+                    self.refreshControl.endRefreshing()
                 }
         } );
         task.resume()

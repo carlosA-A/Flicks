@@ -267,9 +267,9 @@
 			isa = PBXGroup;
 			children = (
 				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
-				20B56609144CE204DFA8221F742B2D76 /* Frameworks */,
 				DF1CD2B6FD453E53B9CF486F1430581C /* Pods */,
 				AF48568CDBD2A9B95BF5BCBB0E5D2410 /* Products */,
+				20B56609144CE204DFA8221F742B2D76 /* Frameworks */,
 				B7CE78F245CE140A48E96F3464597FD0 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
