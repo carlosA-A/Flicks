@@ -35,6 +35,7 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
         
         EZLoadingActivity.showWithDelay("Loading", disableUI: false, seconds: 3)
         
+        //errorTouch.addTarget(self, action: "onTap:")
         //Navigation bar editing
         if let navigationBar = navigationController?.navigationBar { navigationBar.tintColor = UIColor(red: 1.0, green: 0.25, blue: 0.10, alpha: 0.8)
             navigationBar.translucent = true
@@ -202,5 +203,9 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
         // Pass the selected object to the new view controller.
     }
     
+
+    @IBAction func errorTouch(sender: AnyObject) {
+        onRefresh()
+    }
 
 }
